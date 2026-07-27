@@ -13,22 +13,13 @@ const Home = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [sessionExpired, setSessionExpired] = useState(false);
-  const [isPrefilled, setIsPrefilled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Check query parameters for prefill or session expiration
+  // Check query parameters for session expiration
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get('expired') === 'true') {
       setSessionExpired(true);
-    }
-    if (params.get('prefill') === 'superadmin') {
-      setLoginTab('police');
-      setIsPrefilled(true);
-      setFormData({
-        email: 'superadmin@narcovt.gov',
-        password: 'SuperAdminPassword123!'
-      });
     }
   }, [location]);
 
@@ -46,13 +37,11 @@ const Home = () => {
     setSessionExpired(false);
     setLoading(true);
 
-    // Enforce Super Admin login ONLY via URL hash (using prefill flag)
+    // Block Super Admin from logging in through the home page console
     if (formData.email.toLowerCase().trim() === 'superadmin@narcovt.gov') {
-      if (!isPrefilled) {
-        setError('Access Denied: Super Admin console can only be accessed via secure URL portal.');
-        setLoading(false);
-        return;
-      }
+      setError('Access Denied: Please use the secure URL command console to log in as Super Admin.');
+      setLoading(false);
+      return;
     }
 
     try {

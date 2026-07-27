@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const checkHash = () => {
       if (window.location.hash === '#superadmin') {
         window.location.hash = '';
-        window.location.href = '/?prefill=superadmin';
+        window.location.href = '/superadmin-login?prefill=superadmin';
       }
     };
 
