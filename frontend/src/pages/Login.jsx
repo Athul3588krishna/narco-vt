@@ -14,11 +14,17 @@ const Login = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Check if redirect due to expired session
+  // Check if redirect due to expired session or prefill
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get('expired') === 'true') {
       setSessionExpired(true);
+    }
+    if (params.get('prefill') === 'superadmin') {
+      setFormData({
+        email: 'superadmin@narcovt.gov',
+        password: 'SuperAdminPassword123!'
+      });
     }
   }, [location]);
 
@@ -93,7 +99,7 @@ const Login = () => {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-gov-blue transition-smooth text-sm font-medium"
-              placeholder="name@toofan.gov or personal email"
+              placeholder="name@narcovt.gov or personal email"
             />
           </div>
 
