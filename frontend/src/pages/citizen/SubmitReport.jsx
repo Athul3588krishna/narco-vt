@@ -91,14 +91,20 @@ const SubmitReport = () => {
   ];
 
   const districtOptions = [
-    'Central Delhi',
-    'North Delhi',
-    'South Delhi',
-    'East Delhi',
-    'West Delhi',
-    'Gurugram',
-    'Noida',
-    'Ghaziabad'
+    'Alappuzha',
+    'Ernakulam',
+    'Idukki',
+    'Kannur',
+    'Kasaragod',
+    'Kollam',
+    'Kottayam',
+    'Kozhikode',
+    'Malappuram',
+    'Palakkad',
+    'Pathanamthitta',
+    'Thiruvananthapuram',
+    'Thrissur',
+    'Wayanad'
   ];
 
   const handleDetectLocation = () => {

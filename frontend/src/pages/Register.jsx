@@ -22,6 +22,11 @@ const Register = () => {
     setError('');
 
     // Client-side validations
+    const cleanPhone = formData.phone.trim();
+    if (!/^\d{10}$/.test(cleanPhone)) {
+      setError('Phone number must be exactly 10 digits');
+      return;
+    }
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters long');
       return;
@@ -36,7 +41,7 @@ const Register = () => {
       await registerCitizen({
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: cleanPhone,
         password: formData.password
       });
 
@@ -44,7 +49,8 @@ const Register = () => {
       navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}&purpose=verification`);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'Registration failed. Please check inputs.');
+      const backendValidationError = err.response?.data?.errors?.[0]?.message;
+      setError(backendValidationError || err.response?.data?.message || 'Registration failed. Please check inputs.');
     } finally {
       setLoading(false);
     }
@@ -97,8 +103,14 @@ const Register = () => {
             <input
               type="tel"
               required
+              maxLength={10}
+              pattern="[0-9]{10}"
+              title="10-digit phone number"
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/\D/g, '').slice(0, 10);
+                setFormData({ ...formData, phone: numericValue });
+              }}
               className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-gov-blue transition-smooth text-sm font-medium"
               placeholder="e.g. 9876543210"
             />

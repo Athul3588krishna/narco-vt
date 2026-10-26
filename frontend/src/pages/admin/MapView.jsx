@@ -86,9 +86,9 @@ const MapView = () => {
     );
   }
 
-  // Default coordinate center (Delhi/India coordinates)
-  const defaultCenter = [28.6139, 77.2090];
-  const zoomLevel = 5;
+  // Default coordinate center (Kerala coordinates)
+  const defaultCenter = [10.5276, 76.2144];
+  const zoomLevel = 7;
 
   return (
     <div className="space-y-6">

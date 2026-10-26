@@ -5,10 +5,15 @@ const emailSchema = z.string().trim().email({ message: 'Invalid email address fo
 const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters long' });
 const otpSchema = z.string().length(6, { message: 'OTP must be exactly 6 digits' }).regex(/^\d+$/, { message: 'OTP must contain digits only' });
 
+const phoneSchema = z
+  .string({ required_error: 'Phone number is required' })
+  .trim()
+  .regex(/^\d{10}$/, { message: 'Phone number must be exactly 10 digits' });
+
 const registerSchema = z.object({
   name: z.string().trim().min(2, { message: 'Name must be at least 2 characters long' }),
   email: emailSchema,
-  phone: z.string().trim().min(10, { message: 'Phone number must be at least 10 characters long' }),
+  phone: phoneSchema,
   password: passwordSchema
 });
 

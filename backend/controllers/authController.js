@@ -29,6 +29,7 @@ const registerCitizen = async (req, res, next) => {
     // 2. Check if user already exists
     const emailLookup = hashEmail(email);
     const existingUser = await User.findOne({ emailLookup });
+
     if (existingUser) {
       res.status(400);
       throw new Error('An account with this email already exists.');
@@ -40,9 +41,9 @@ const registerCitizen = async (req, res, next) => {
     // 4. Generate OTP
     const rawOtp = generateOTP();
     const hashedOtp = hashOTP(rawOtp);
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-    // 5. Create user (unverified citizen)
+    // 5. Create user
     const newUser = await User.create({
       name,
       email,
@@ -55,18 +56,18 @@ const registerCitizen = async (req, res, next) => {
       otpPurpose: 'verification'
     });
 
-    // 6. Send OTP (mock email logs to terminal console)
+    // 6. Send OTP
     await mailService.sendVerificationOTP(email, rawOtp);
 
     res.status(201).json({
       success: true,
-      message: 'Citizen registered successfully. Please verify your account using the OTP sent to your email.'
+      message:
+        'Citizen registered successfully. Please verify your account using the OTP sent to your email.'
     });
   } catch (error) {
     next(error);
   }
 };
-
 /**
  * Verify OTP code for account verification or password recovery.
  */
